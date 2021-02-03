@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ivStepperMinus"
+        android:id="@+id/iv_left"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:background="@drawable/ms_sel_button"
@@ -16,7 +15,7 @@
         android:src="@drawable/ms_svg_less" />
 
     <ImageView
-        android:id="@+id/ivStepperPlus"
+        android:id="@+id/iv_right"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -27,11 +26,11 @@
         android:src="@drawable/ms_svg_add" />
 
     <TextView
-        android:id="@+id/tvStepperContent"
+        android:id="@+id/tv_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/ivStepperPlus"
-        android:layout_toRightOf="@id/ivStepperMinus"
+        android:layout_toStartOf="@id/iv_right"
+        android:layout_toEndOf="@id/iv_left"
         android:background="@color/ms_stepper_text_bg"
         android:gravity="center"
         android:textColor="@color/ms_stepper_text"

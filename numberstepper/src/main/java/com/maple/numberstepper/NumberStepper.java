@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.lang.ref.WeakReference;
 
@@ -54,29 +57,6 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
     //当前模式
     private Mode mode = Mode.AUTO;
 
-    public enum Mode {
-        AUTO(0), CUSTOM(1);
-        private final int value;
-
-        Mode(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public static Mode valueOf(int value) {    // 手写的从int到enum的转换函数
-            switch (value) {
-                case 0:
-                    return AUTO;
-                case 1:
-                    return CUSTOM;
-            }
-            return AUTO;
-        }
-    }
-
     private int value = 0;
     private int minValue = 0;
     private int maxValue = 100;
@@ -87,14 +67,14 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
 
     public NumberStepper(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initViews(attrs);
+        initViews(context, attrs);
     }
 
-    private void initViews(AttributeSet attrs) {
-        LayoutInflater.from(getContext()).inflate(R.layout.ms_view_number_stepper, this, true);
-        tvStepperContent = (TextView) findViewById(R.id.tvStepperContent);
-        ivStepperMinus = (ImageView) findViewById(R.id.ivStepperMinus);
-        ivStepperPlus = (ImageView) findViewById(R.id.ivStepperPlus);
+    private void initViews(Context context, AttributeSet attrs) {
+        LayoutInflater.from(context).inflate(R.layout.ms_view_number_stepper, this, true);
+        tvStepperContent = (TextView) findViewById(R.id.tv_text);
+        ivStepperMinus = (ImageView) findViewById(R.id.iv_left);
+        ivStepperPlus = (ImageView) findViewById(R.id.iv_right);
 
         String text = "";
         Drawable background = null;
@@ -103,10 +83,11 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
         Drawable rightButtonResources = null;
         Drawable leftButtonBackground = null;
         Drawable rightButtonBackground = null;
-        int contentTextColor = getResources().getColor(R.color.ms_stepper_text);
+        int contentTextColor = ContextCompat.getColor(context, R.color.ms_stepper_text);
         float contentTextSize = 0;
+        int buttonWidth = dp2px(context, 30f);
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.NumberStepper);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NumberStepper);
             int modeValue = a.getInt(R.styleable.NumberStepper_mode, Mode.AUTO.getValue());
             mode = Mode.valueOf(modeValue);
             minValue = a.getInt(R.styleable.NumberStepper_min, minValue);
@@ -115,16 +96,14 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
             valueSlowStep = a.getInt(R.styleable.NumberStepper_step, valueSlowStep);
             if (valueSlowStep <= 0) valueSlowStep = 1;
             text = a.getString(R.styleable.NumberStepper_text);
-
             background = a.getDrawable(R.styleable.NumberStepper_stepper_background);
             contentBackground = a.getDrawable(R.styleable.NumberStepper_stepper_contentBackground);
+            buttonWidth = a.getDimensionPixelSize(R.styleable.NumberStepper_stepper_buttonWidth, buttonWidth);
             leftButtonResources = a.getDrawable(R.styleable.NumberStepper_stepper_leftButtonResources);
             rightButtonResources = a.getDrawable(R.styleable.NumberStepper_stepper_rightButtonResources);
             leftButtonBackground = a.getDrawable(R.styleable.NumberStepper_stepper_leftButtonBackground);
             rightButtonBackground = a.getDrawable(R.styleable.NumberStepper_stepper_rightButtonBackground);
-
             contentTextColor = a.getColor(R.styleable.NumberStepper_stepper_contentTextColor, contentTextColor);
-
             contentTextSize = a.getFloat(R.styleable.NumberStepper_stepper_contentTextSize, 0);
             a.recycle();
         }
@@ -135,13 +114,19 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
             setBackgroundResource(R.color.ms_stepper_button_press);
         }
 
-
         if (contentBackground != null) {
             setContentBackground(contentBackground);
         }
+
         tvStepperContent.setTextColor(contentTextColor);
         if (contentTextSize > 0)
             setContentTextSize(contentTextSize);
+
+        ivStepperMinus.setLayoutParams(new LayoutParams(buttonWidth, ivStepperMinus.getLayoutParams().height));
+        LayoutParams rightParams = (LayoutParams) ivStepperPlus.getLayoutParams();
+        rightParams.width = buttonWidth;
+        ivStepperPlus.setLayoutParams(rightParams);
+
 
         if (leftButtonBackground != null) {
             ivStepperMinus.setBackground(leftButtonBackground);
@@ -340,10 +325,31 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
         this.listener = listener;
     }
 
+    public enum Mode {
+        AUTO(0), CUSTOM(1);
+        private final int value;
+
+        Mode(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static Mode valueOf(int value) {// 手写的从int到enum的转换函数
+            switch (value) {
+                case 0:
+                    return AUTO;
+                case 1:
+                    return CUSTOM;
+            }
+            return AUTO;
+        }
+    }
+
     /**
      * 返回当前模式类型
-     *
-     * @return
      */
     public Mode getMode() {
         return mode;
@@ -351,8 +357,6 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
 
     /**
      * 模式设置 AUTO(0) 数值写到滑动条, CUSTOM(1) 自定义文字;
-     *
-     * @param mode
      */
     public void setMode(Mode mode) {
         this.mode = mode;
@@ -360,8 +364,6 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
 
     /**
      * 获取当前值
-     *
-     * @return
      */
     public int getValue() {
         return value;
@@ -369,8 +371,6 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
 
     /**
      * 设置当前值
-     *
-     * @param value
      */
     public void setValue(int value) {
         this.value = valueRangeCheck(value);
@@ -388,7 +388,6 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
     public int getMinValue() {
         return minValue;
     }
-
 
     public void setMinValue(int minValue) {
         this.minValue = minValue;
@@ -482,5 +481,10 @@ public class NumberStepper extends RelativeLayout implements View.OnTouchListene
      */
     public void setRightButtonResources(Drawable drawable) {
         ivStepperPlus.setImageDrawable(drawable);
+    }
+
+    public static int dp2px(Context context, float dpVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, context.getResources()
+                .getDisplayMetrics());
     }
 }
