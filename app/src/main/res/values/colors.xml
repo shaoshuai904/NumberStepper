@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="stepper_button_def">#cc482c</color>
+    <color name="stepper_button_press">#92011d</color>
+    <color name="stepper_content_bg">#f95b3a</color>
+    <color name="stepper_text">#ffffff</color>
 </resources>

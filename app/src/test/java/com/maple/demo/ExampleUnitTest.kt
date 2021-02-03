@@ -1,4 +1,4 @@
-package com.maple.numberstepper
+package com.maple.demo
 
 import org.junit.Test
 
