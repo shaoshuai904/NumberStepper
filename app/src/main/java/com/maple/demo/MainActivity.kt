@@ -21,18 +21,22 @@ class MainActivity : AppCompatActivity(), NumberStepper.NumberStepperValueChange
         tvValueCustom = findViewById(R.id.tvValueCustom)
         stepperCustom = findViewById(R.id.stepperCustom)
 
-        tvValue.text = stepper.value.toString()
-        tvValueCustom.text = stepperCustom.value.toString()
+        tvValue.text = stepper.currentValue.toString()
         stepper.setOnValueChangeListener(this)
+
+        tvValueCustom.text = stepperCustom.currentValue.toString()
         stepperCustom.setOnValueChangeListener(this)
 
-        stepperCustom.setBackgroundColor(ContextCompat.getColor(this, R.color.stepper_button_def))
-        stepperCustom.setButtonBackGround(R.drawable.sel_custom_button_bg)
-        stepperCustom.setContentBackground(R.color.stepper_content_bg)
-        stepperCustom.setContentTextColor(R.color.stepper_text)
-        stepperCustom.setContentTextSize(18f)
-        stepperCustom.setLeftButtonResources(R.drawable.svg_left)
-        stepperCustom.setRightButtonResources(R.drawable.svg_right)
+        with(stepperCustom) {
+            setBackgroundColor(ContextCompat.getColor(context, R.color.stepper_button_def))
+            tvText.setBackgroundResource(R.color.stepper_content_bg)
+            tvText.setTextColor(ContextCompat.getColor(context, R.color.stepper_text))
+            tvText.textSize = 18f
+            ivLeft.setBackgroundResource(R.drawable.sel_custom_button_bg)
+            ivLeft.setImageResource(R.drawable.svg_left)
+            ivRight.setBackgroundResource(R.drawable.sel_custom_button_bg)
+            ivRight.setImageResource(R.drawable.svg_right)
+        }
     }
 
     override fun onValueChange(view: View, value: Int) {

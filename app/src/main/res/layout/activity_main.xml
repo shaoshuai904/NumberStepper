@@ -31,21 +31,21 @@
         android:id="@+id/stepperCustom"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        stepper:max="200"
-        stepper:min="50"
-        stepper:mode="custom"
-        stepper:step="5"
-        stepper:text="Move Me"
-        stepper:value="100" />
+        stepper:currentValue="100"
+        stepper:maxValue="200"
+        stepper:minValue="50"
+        stepper:stepValue="5"
+        stepper:stepper_final_text="Move Me" />
 
     <com.maple.numberstepper.NumberStepper
         android:id="@+id/stepperCustom2"
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
-        stepper:max="200"
-        stepper:min="50"
-        stepper:step="5"
+        stepper:currentValue="100"
+        stepper:maxValue="200"
+        stepper:minValue="50"
+        stepper:stepValue="5"
         stepper:stepper_background="#349AFF"
         stepper:stepper_buttonWidth="50dp"
         stepper:stepper_contentBackground="#B1CAFB"
@@ -54,7 +54,6 @@
         stepper:stepper_leftButtonBackground="#5BADFF"
         stepper:stepper_leftButtonResources="@drawable/svg_left"
         stepper:stepper_rightButtonBackground="#5BADFF"
-        stepper:stepper_rightButtonResources="@drawable/svg_right"
-        stepper:value="100" />
+        stepper:stepper_rightButtonResources="@drawable/svg_right" />
 
 </LinearLayout>
