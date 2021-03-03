@@ -1,8 +1,8 @@
-# NumberStepper - 数字步进器-购物车数量加减按钮
+# NumberStepper - 数字步进器
 
 [![API](https://img.shields.io/badge/API-19%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=19)
-[![demo](https://img.shields.io/badge/download-demo-blue.svg)](/screens/app-demo.apk) <-- 点击下载demo
 
+数字步进器 - 购物车数量加减按钮，可拖拽加减
 
 ![show_01](/screens/show_01.png)
 
@@ -27,7 +27,7 @@ dependencies {
 }
 ```
 
-###  NumberStepper
+**Step 3.** Use in xml file
 
 ```java
     <com.maple.numberstepper.NumberStepper
