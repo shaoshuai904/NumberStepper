@@ -1,6 +1,7 @@
 # NumberStepper - 数字步进器
 
 [![API](https://img.shields.io/badge/API-19%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=19)
+[![Version](https://jitpack.io/v/shaoshuai904/NumberStepper.svg)](https://jitpack.io/#shaoshuai904/NumberStepper)
 
 数字步进器 - 购物车数量加减按钮，可拖拽加减
 
@@ -29,12 +30,11 @@ dependencies {
 
 **Step 3.** Use in xml file
 
-```java
+```xml
     <com.maple.numberstepper.NumberStepper
-        android:id="@+id/stepperCustom2"
+        android:id="@+id/ns_stepper"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
         stepper:currentValue="100"
         stepper:maxValue="200"
         stepper:minValue="50"
