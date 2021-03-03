@@ -117,7 +117,6 @@ class NumberStepper : RelativeLayout, OnTouchListener {
         setOnTouchListener(this)
     }
 
-
     private var startX = 0f//按下的初始x值
     private var startTime: Long = 0//按下时间
     private var status = STATUS_NORMAL//当前状态
@@ -147,7 +146,7 @@ class NumberStepper : RelativeLayout, OnTouchListener {
                 }
             }
             MotionEvent.ACTION_MOVE -> {
-                //是按钮则不能移动,恢复位置的动画中也不能移动
+                // 点击左右按钮 和 恢复位置动画 时 按钮不移动 且 不加减数值
                 if (v == ivLeft || v == ivRight || animationing) {
                     // break
                 } else {
@@ -157,12 +156,10 @@ class NumberStepper : RelativeLayout, OnTouchListener {
                     moveStepperContent(x)
                     // moveEffectStatus(moveX)
                     val scaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-                    status = if (moveX > scaledTouchSlop) {
-                        STATUS_PLUS
-                    } else if (moveX < -scaledTouchSlop) {
-                        STATUS_MIMNUS
-                    } else {
-                        STATUS_NORMAL
+                    status = when {
+                        moveX > scaledTouchSlop -> STATUS_PLUS
+                        moveX < -scaledTouchSlop -> STATUS_MIMNUS
+                        else -> STATUS_NORMAL
                     }
                 }
             }
@@ -178,7 +175,6 @@ class NumberStepper : RelativeLayout, OnTouchListener {
         }
         return true
     }
-
 
     private var animationing = false //动画中,不能进行滑动
     private val updateRunnable: UpdateRunnable by lazy { UpdateRunnable(this) }
@@ -226,8 +222,7 @@ class NumberStepper : RelativeLayout, OnTouchListener {
     internal class UpdateRunnable(view: NumberStepper) : Runnable {
         private val view: WeakReference<NumberStepper> = WeakReference(view)
         override fun run() {
-            val stepper = view.get()
-            stepper?.updateUI()
+            view.get()?.updateUI()
         }
     }
 
